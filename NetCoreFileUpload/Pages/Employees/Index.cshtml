@@ -1,0 +1,53 @@
+﻿@page "{id:int?}"
+@model NetCoreFileUpload.Pages.Employees.IndexModel
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+    <h1>Employees</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Employee Name
+            </th>
+            <th>
+                Files
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.EmployeeData.Employees)
+{
+    string selectedRow = "";
+    if (item.Id == Model.EmployeeID)
+    {
+        selectedRow = "table - success";
+    }
+        <tr class="@selectedRow">
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @{ 
+                    foreach (var file in item.AppFiles)
+                    {
+                         @file.Id @: <img src="data:image;base64,@System.Convert.ToBase64String(file.Content)" asp-append-version="true"  />
+                    }
+                }
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
